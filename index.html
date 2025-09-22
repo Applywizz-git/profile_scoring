@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Screening Report - Dinesh Tunguturi</title>
+    <meta name="description" content="Comprehensive ATS screening report analyzing GitHub, LinkedIn, portfolio, resume, and certifications for technical roles.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="min-h-screen bg-bg">
+        <main class="canvas py-8">
+            <!-- Page Header Section -->
+            <section class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-8" id="pageHeader">
+                <!-- Left card - H1 + metadata -->
+                <div class="bento-card reveal">
+                    <h1 class="h1 mb-6">ATS Screening Report</h1>
+                    
+                    <div class="space-y-2 pb-4 border-b border-line">
+                        <div class="flex justify-between items-center">
+                            <span class="body">Applicant Name:</span>
+                            <span class="font-semibold">Dinesh Tunguturi</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="body">Contact Detection:</span>
+                            <span class="badge badge-yes">YES</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="body">LinkedIn Id Detection:</span>
+                            <span class="badge badge-yes">YES</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="body">GitHub Detection:</span>
+                            <span class="badge badge-yes">YES</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right card - score tiles + download -->
+                <div class="bento-card reveal">
+                    <div class="grid grid-cols-1 sm-grid-cols-2 gap-4 mb-6">
+                        <div class="score-tile score-tile-poor reveal">
+                            <div class="score-number">43</div>
+                            <div class="score-label">ATS Score</div>
+                        </div>
+                        
+                        <div class="score-tile score-tile-amber reveal">
+                            <div class="score-number">52</div>
+                            <div class="score-label">Profile Score</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary w-full reveal">
+                        <span>📄</span>
+                        <span class="ml-2">Download Report</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Performance Section -->
+            <section class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-8" id="performanceSection">
+                <!-- Left bento - Performance Table -->
+                <div class="bento-card reveal">
+                    <h2 class="h2 mb-6">Section-Level Performance</h2>
+                    
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Section</th>
+                                    <th>Score</th>
+                                    <th>Grade</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="reveal">
+                                    <td class="font-medium">GitHub</td>
+                                    <td class="font-mono">10/27</td>
+                                    <td><span class="badge badge-poor">Poor</span></td>
+                                    <td class="small font-semibold uppercase tracking-wide">27%</td>
+                                </tr>
+                                <tr class="reveal">
+                                    <td class="font-medium">LinkedIn</td>
+                                    <td class="font-mono">0/18</td>
+                                    <td><span class="badge badge-poor">Poor</span></td>
+                                    <td class="small font-semibold uppercase tracking-wide">18%</td>
+                                </tr>
+                                <tr class="reveal">
+                                    <td class="font-medium">Portfolio</td>
+                                    <td class="font-mono">23/23</td>
+                                    <td><span class="badge badge-excellent">Excellent</span></td>
+                                    <td class="small font-semibold uppercase tracking-wide">23%</td>
+                                </tr>
+                                <tr class="reveal">
+                                    <td class="font-medium">Resume (ATS)</td>
+                                    <td class="font-mono">10/23</td>
+                                    <td><span class="badge badge-poor">Poor</span></td>
+                                    <td class="small font-semibold uppercase tracking-wide">23%</td>
+                                </tr>
+                                <tr class="reveal">
+                                    <td class="font-medium">Certifications</td>
+                                    <td class="font-mono">9/9</td>
+                                    <td><span class="badge badge-excellent">Excellent</span></td>
+                                    <td class="small font-semibold uppercase tracking-wide">9%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right bento - Pie Chart -->
+                <div class="bento-card reveal">
+                    <h2 class="h2 mb-6">Pie Chart of Overall Representation</h2>
+                    
+                    <div class="flex flex-col items-center">
+                        <!-- Simple pie visualization -->
+                        <div class="pie-chart mb-6">
+                            <div class="pie-center"></div>
+                        </div>
+                        
+                        <!-- Legend -->
+                        <div class="pie-legend w-full">
+                            <div class="legend-item reveal">
+                                <div class="legend-color" style="background-color: #8B5CF6;"></div>
+                                <span class="body">GitHub</span>
+                                <span class="font-semibold">37%</span>
+                            </div>
+                            <div class="legend-item reveal">
+                                <div class="legend-color" style="background-color: #DC2626;"></div>
+                                <span class="body">Resume (ATS)</span>
+                                <span class="font-semibold">43%</span>
+                            </div>
+                            <div class="legend-item reveal">
+                                <div class="legend-color" style="background-color: #10B981;"></div>
+                                <span class="body">Certifications</span>
+                                <span class="font-semibold">100%</span>
+                            </div>
+                            <div class="legend-item reveal">
+                                <div class="legend-color" style="background-color: #059669;"></div>
+                                <span class="body">Portfolio</span>
+                                <span class="font-semibold">100%</span>
+                            </div>
+                            <div class="legend-item reveal">
+                                <div class="legend-color" style="background-color: #9CA3AF;"></div>
+                                <span class="body">LinkedIn</span>
+                                <span class="font-semibold">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SubSections -->
+            <section class="mb-8" id="subSections">
+                <!-- Row 1: GitHub | LinkedIn -->
+                <div class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-6">
+                    <!-- GitHub Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">GitHub</h3>
+                            <div class="score-circle score-circle-poor">10</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Public link present:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">GitHub link detected.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Repo links detected:</span>
+                                <span class="badge badge-poor">0/6</span>
+                            </div>
+                            <p class="small">0 repo(s) found.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Docs/README/tests/CI:</span>
+                                <span class="badge badge-amber">2/4</span>
+                            </div>
+                            <p class="small">Signals of quality and maintainability.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Hosted demos:</span>
+                                <span class="badge badge-excellent">2/2</span>
+                            </div>
+                            <p class="small">Live demo or GitHub Pages present.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Stack diversity:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">Multiple languages/tools referenced.</p>
+                        </div>
+                    </div>
+
+                    <!-- LinkedIn Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">LinkedIn</h3>
+                            <div class="score-circle score-circle-poor">0</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Public link present:</span>
+                                <span class="badge badge-poor">0/6</span>
+                            </div>
+                            <p class="small">No LinkedIn link found; add it to boost visibility.</p>
+                        </div>
+                        
+                        <!-- Empty state illustration
+                        <div class="empty-state">
+                            <div class="empty-state-icon">
+                                <span class="small"></span>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <!-- Row 2: Portfolio | Resume (ATS) -->
+                <div class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-6">
+                    <!-- Portfolio Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">Portfolio</h3>
+                            <div class="score-circle score-circle-excellent">23</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Link present:</span>
+                                <span class="badge badge-excellent">2/2</span>
+                            </div>
+                            <p class="small">Portfolio/personal site link detected.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Projects visible (est.):</span>
+                                <span class="badge badge-excellent">6/6</span>
+                            </div>
+                            <p class="small">~6 projects/demos detected across links.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Case study depth:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">Problem→Solution→Results language present.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Diversity:</span>
+                                <span class="badge badge-excellent">2/2</span>
+                            </div>
+                            <p class="small">Multiple domains/areas referenced.</p>
+                        </div>
+                    </div>
+
+                    <!-- Resume (ATS) Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">Resume (ATS)</h3>
+                            <div class="score-circle score-circle-poor">10</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">ATS-friendly layout:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">Readable, minimal heavy formatting.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Action verbs & metrics:</span>
+                                <span class="badge badge-amber">3/5</span>
+                            </div>
+                            <p class="small">Impact statements detected.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Core sections present:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">Summary/Experience/Projects/Skills/Education.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Keyword hints:</span>
+                                <span class="badge badge-excellent">2/2</span>
+                            </div>
+                            <p class="small">Role-relevant keywords present.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Certifications (full width) -->
+                <div class="bento-card reveal">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="h3">Certifications</h3>
+                        <div class="score-circle score-circle-excellent">9</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg-grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Certifications mentioned:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">Certificates detected in resume.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Relevance:</span>
+                                <span class="badge badge-excellent">3/3</span>
+                            </div>
+                            <p class="small">Cloud/DBT/Spark/K8s/Data/ML.</p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Applied learning:</span>
+                                <span class="badge badge-excellent">2/2</span>
+                            </div>
+                            <p class="small">Referenced within projects/portfolio.</p>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="body">Recency:</span>
+                                <span class="badge badge-excellent">1/1</span>
+                            </div>
+                            <p class="small">Year markers suggest recency.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Section -->
+            <section class="mb-8" id="chartSection">
+                <div class="bento-card reveal">
+                    <h2 class="h2 mb-8">Screening Emphasis by Company Type (Initial Screen)</h2>
+                    
+                    <div class="chart-container">
+                        <!-- Chart container -->
+                        <div class="chart-bars">
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" data-value="47" data-max="52">
+                                    <div class="bar-value">47</div>
+                                </div>
+                                <div class="chart-label">MAANG</div>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar chart-bar-max" data-value="52" data-max="52">
+                                    <div class="bar-value">52</div>
+                                </div>
+                                <div class="chart-label">Startups</div>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" data-value="49" data-max="52">
+                                    <div class="bar-value">49</div>
+                                </div>
+                                <div class="chart-label">Mid-sized</div>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" data-value="47" data-max="52">
+                                    <div class="bar-value">47</div>
+                                </div>
+                                <div class="chart-label">Fortune 500</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Y-axis labels -->
+                        <div class="chart-y-axis">
+                            <span class="y-label">60</span>
+                            <span class="y-label">40</span>
+                            <span class="y-label">20</span>
+                            <span class="y-label">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestions Section -->
+            <section class="mb-8" id="suggestionsSection">
+                <div class="bento-card reveal">
+                    <div class="mb-6">
+                        <h2 class="h2">Suggestions</h2>
+                        <div class="h-divider mt-4"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg-grid-cols-3 gap-6 mb-8">
+                        <div class="suggestion-card reveal">
+                            <div class="flex items-start">
+                                <span class="suggestion-icon">🚀</span>
+                                <p class="body">Include hosted demos (GitHub Pages/Vercel/Netlify) and mention CI/tests.</p>
+                            </div>
+                        </div>
+                        <div class="suggestion-card reveal">
+                            <div class="flex items-start">
+                                <span class="suggestion-icon">💼</span>
+                                <p class="body">Add a public LinkedIn link and ensure headline + about reflect role keywords.</p>
+                            </div>
+                        </div>
+                        <div class="suggestion-card reveal">
+                            <div class="flex items-start">
+                                <span class="suggestion-icon">💻</span>
+                                <p class="body">Link your LeetCode to evidence DSA practice; include solved counts/contests.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center reveal">
+                        <button class="btn btn-cta px-8">
+                            <span>📞</span>
+                            <span class="ml-2">Please contact me for more details…</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-line mt-16">
+            <div class="canvas py-6">
+                <p class="small text-center">Generated ATS Screening Report.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

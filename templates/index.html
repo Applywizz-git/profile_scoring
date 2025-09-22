@@ -1,0 +1,314 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Screening Report - {{ applicant_name }}</title>
+    <meta name="description" content="Comprehensive ATS screening report analyzing GitHub, LinkedIn, portfolio, resume, and certifications for technical roles.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="min-h-screen bg-bg">
+        <main class="canvas py-8">
+            <!-- Page Header Section -->
+            <section class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-8" id="pageHeader">
+                <!-- Left card - H1 + metadata -->
+                <div class="bento-card reveal">
+                    <h1 class="h1 mb-6">ATS Screening Report</h1>
+                    
+                    <div class="space-y-2 pb-4 border-b border-line">
+                        <div class="flex justify-between items-center">
+                            <span class="body">Applicant Name:</span>
+                            <span class="font-semibold">{{ applicant_name }}</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="body">Contact Detection:</span>
+                            <span class="badge badge-{% if contact_detection == 'YES' %}yes{% else %}no{% endif %}">{{ contact_detection }}</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="body">LinkedIn Id Detection:</span>
+                            <span class="badge badge-{% if linkedin_detection == 'YES' %}yes{% else %}no{% endif %}">{{ linkedin_detection }}</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="body">GitHub Detection:</span>
+                            <span class="badge badge-{% if github_detection == 'YES' %}yes{% else %}no{% endif %}">{{ github_detection }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right card - score tiles + download -->
+                <div class="bento-card reveal">
+                    <div class="grid grid-cols-1 sm-grid-cols-2 gap-4 mb-6">
+                        <div class="score-tile score-tile-{% if ats_score < 50 %}poor{% elif ats_score < 70 %}amber{% else %}green{% endif %} reveal">
+                            <div class="score-number">{{ ats_score }}</div>
+                            <div class="score-label">ATS Score</div>
+                        </div>
+                        
+                        <div class="score-tile score-tile-{% if overall_score_average < 50 %}poor{% elif overall_score_average < 70 %}amber{% else %}green{% endif %} reveal">
+                            <div class="score-number">{{ overall_score_average }}</div>
+                            <div class="score-label">Profile Score</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary w-full reveal">
+                        <span>📄</span>
+                        <span class="ml-2">Download Report</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Performance Section -->
+            <section class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-8" id="performanceSection">
+                <!-- Left bento - Performance Table -->
+                <div class="bento-card reveal">
+                    <h2 class="h2 mb-6">Section-Level Performance</h2>
+                    
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Section</th>
+                                    <th>Score</th>
+                                    <th>Grade</th>
+                                    <th>Weight</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for section_name, data in score_breakdown.items %}
+                                <tr class="reveal">
+                                    <td class="font-medium">{{ section_name }}</td>
+                                    <td class="font-mono">{{ data.score }}/{{ data.max }}</td>
+                                    <td><span class="badge badge-{{ data.grade|lower }}">{{ data.grade }}</span></td>
+                                    <td class="small font-semibold uppercase tracking-wide">{{ data.weight }}%</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right bento - Pie Chart -->
+                <div class="bento-card reveal">
+                    <h2 class="h2 mb-6">Pie Chart of Overall Representation</h2>
+                    
+                    <div class="flex flex-col items-center">
+                        <!-- Simple pie visualization -->
+                        <div class="pie-chart mb-6">
+                            <div class="pie-center"></div>
+                        </div>
+                        
+                        <!-- Legend -->
+                        <div class="pie-legend w-full">
+                            {% for section_name, data in score_breakdown.items %}
+                            <div class="legend-item reveal">
+                                <div class="legend-color" style="background-color: {{ data.color }}"></div>
+                                <span class="body">{{ section_name }}</span>
+                                <span class="font-semibold">{{ data.score }}/{{ data.max }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SubSections -->
+            <section class="mb-8" id="subSections">
+                <!-- Row 1: GitHub | LinkedIn -->
+                <div class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-6">
+                    <!-- GitHub Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">GitHub</h3>
+                            <div class="score-circle score-circle-{{ github_score_class }}">{{ github_score }}</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Public link present:</span>
+                                <span class="badge badge-{{ github_public_link_class }}">{{ github_public_link_score }}</span>
+                            </div>
+                            <p class="small">{{ github_public_link_desc }}</p>
+                             <!-- Add the remaining sections here -->
+                        </div>
+                    </div>
+
+                    <!-- LinkedIn Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">LinkedIn</h3>
+                            <div class="score-circle score-circle-{{ linkedin_score_class }}">{{ linkedin_score }}</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Public link present:</span>
+                                <span class="badge badge-{{ linkedin_public_link_class }}">{{ linkedin_public_link_score }}</span>
+                            </div>
+                            <p class="small">{{ linkedin_public_link_desc }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Portfolio | Resume (ATS) -->
+                <div class="grid grid-cols-1 lg-grid-cols-2 gap-desktop mb-6">
+                    <!-- Portfolio Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">Portfolio</h3>
+                            <div class="score-circle score-circle-{{ portfolio_score_class }}">{{ portfolio_score }}</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Link present:</span>
+                                <span class="badge badge-{{ portfolio_link_class }}">{{ portfolio_link_score }}</span>
+                            </div>
+                            <p class="small">{{ portfolio_link_desc }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Resume (ATS) Card -->
+                    <div class="bento-card reveal">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="h3">Resume (ATS)</h3>
+                            <div class="score-circle score-circle-{{ ats_score_class }}">{{ ats_score }}</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">ATS-friendly layout:</span>
+                                <span class="badge badge-{{ ats_layout_class }}">{{ ats_layout_score }}</span>
+                            </div>
+                            <p class="small">{{ ats_layout_desc }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: Certifications (full width) -->
+                <div class="bento-card reveal">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="h3">Certifications</h3>
+                        <div class="score-circle score-circle-{{ cert_score_class }}">{{ cert_score }}</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg-grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Certifications mentioned:</span>
+                                <span class="badge badge-{{ cert_mentioned_class }}">{{ cert_mentioned_score }}</span>
+                            </div>
+                            <p class="small">{{ cert_mentioned_desc }}</p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="body">Relevance:</span>
+                                <span class="badge badge-{{ cert_relevance_class }}">{{ cert_relevance_score }}</span>
+                            </div>
+                            <p class="small">{{ cert_relevance_desc }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Section -->
+            <section class="mb-8" id="chartSection">
+                <div class="bento-card reveal">
+                    <h2 class="h2 mb-8">Screening Emphasis by Company Type (Initial Screen)</h2>
+                    
+                    <div class="chart-container">
+                        <!-- Chart container -->
+                        <div class="chart-bars">
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" data-value="47" data-max="52">
+                                    <div class="bar-value">47</div>
+                                </div>
+                                <div class="chart-label">MAANG</div>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar chart-bar-max" data-value="52" data-max="52">
+                                    <div class="bar-value">52</div>
+                                </div>
+                                <div class="chart-label">Startups</div>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" data-value="49" data-max="52">
+                                    <div class="bar-value">49</div>
+                                </div>
+                                <div class="chart-label">Mid-sized</div>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar" data-value="47" data-max="52">
+                                    <div class="bar-value">47</div>
+                                </div>
+                                <div class="chart-label">Fortune 500</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Y-axis labels -->
+                        <div class="chart-y-axis">
+                            <span class="y-label">60</span>
+                            <span class="y-label">40</span>
+                            <span class="y-label">20</span>
+                            <span class="y-label">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestions Section -->
+            <section class="mb-8" id="suggestionsSection">
+                <div class="bento-card reveal">
+                    <div class="mb-6">
+                        <h2 class="h2">Suggestions</h2>
+                        <div class="h-divider mt-4"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg-grid-cols-3 gap-6 mb-8">
+                        <div class="suggestion-card reveal">
+                            <div class="flex items-start">
+                                <span class="suggestion-icon">🚀</span>
+                                <p class="body">{{ suggestion_1 }}</p>
+                            </div>
+                        </div>
+                        <div class="suggestion-card reveal">
+                            <div class="flex items-start">
+                                <span class="suggestion-icon">💼</span>
+                                <p class="body">{{ suggestion_2 }}</p>
+                            </div>
+                        </div>
+                        <div class="suggestion-card reveal">
+                            <div class="flex items-start">
+                                <span class="suggestion-icon">💻</span>
+                                <p class="body">{{ suggestion_3 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center reveal">
+                        <button class="btn btn-cta px-8">
+                            <span>📞</span>
+                            <span class="ml-2">Please contact me for more details…</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-line mt-16">
+            <div class="canvas py-6">
+                <p class="small text-center">Generated ATS Screening Report.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

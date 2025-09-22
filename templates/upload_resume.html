@@ -1,0 +1,372 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Upload Resume</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Lottie -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+  <style>
+    /* ===== Base page ===== */
+    html, body { 
+      height: 100%; 
+      margin: 0; 
+      font-family: 'Segoe UI', sans-serif; 
+    }
+    body{
+      background:linear-gradient(135deg,#e0f7fa,#fce4ec);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+    }
+    .form-container{
+      background:#ffffffcc;
+      backdrop-filter:blur(10px);
+      padding:30px 40px;
+      border-radius:15px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.1);
+      width:100%;
+      max-width:560px;
+      text-align:center;
+    }
+    h1{font-size:1.8em;color:#333;margin-bottom:15px}
+    p{font-size:.95em;color:#666;margin-bottom:25px}
+    label{display:block;font-weight:bold;color:#444;margin-bottom:5px;text-align:left}
+    input[type="text"], input[type="file"], button{
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      margin-bottom:20px;
+      font-size:1em;
+      transition:border-color .2s;
+    }
+    input[type="text"]:focus, input[type="file"]:focus{
+      border-color:#42a5f5;
+      outline:none;
+    }
+    button{
+      background:linear-gradient(135deg,#42a5f5,#7e57c2);
+      color:#fff;
+      font-size:1.1em;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+      transition:transform .2s,box-shadow .2s;
+    }
+    button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    /* ===== Datalist and Input Styling ===== */
+    .input-container {
+      position: relative;
+      width: 100%;
+    }
+
+    input[list] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    datalist {
+      position: absolute;
+      top: 100%; /* Place directly below input */
+      left: 0;
+      width: 100%;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 100;
+      margin-top: 5px;
+    }
+
+    datalist option {
+      padding: 10px;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    datalist option:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* ===== Fullscreen Loader ===== */
+    #loaderOverlay{
+      position:fixed; inset:0; z-index:9999; display:none;
+      background:linear-gradient(135deg,#eef7ff,#fff2ff);
+      align-items:center; justify-content:center; padding:24px;
+    }
+    #loaderOverlay.show{ display:flex; }
+
+    .loader-box{
+      display:flex; flex-direction:column; align-items:center; gap:16px;
+      background:#fff; border-radius:24px; padding:28px 24px;
+      box-shadow:0 22px 66px rgba(16,24,40,.18);
+      width:min(92vw, 760px);
+      text-align:center;
+    }
+
+    #lottiePlane{ width:clamp(250px,40vw,400px); height:clamp(250px,40vw,400px); }
+    #lottieBar{
+      width:clamp(220px,48vw,560px);
+      height:clamp(130px,2.6vw,22px);
+    }
+    #loadingText{ font-size:1.08rem; font-weight:800; color:#0f172a; letter-spacing:.2px; }
+    #etaNote{ font-size:.95rem; color:#475569; margin-bottom:4px; }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 20px;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h1>Profile Analyzer</h1>
+  <p>Upload your resume and enter your target job role.</p>
+
+  <form id="resumeForm" method="POST" enctype="multipart/form-data" action="{% url 'analyze_resume' %}">
+    {% csrf_token %}
+
+    <!-- Input container with datalist -->
+    <div class="input-container">
+      <label for="job_role">Job Role</label>
+      <input type="text" id="job_role" name="job_role" list="rolesList" placeholder="Type or choose a role (e.g., Software Engineer)" required />
+      <datalist id="rolesList">
+        <!-- ==== Technical Roles ==== -->
+        <option value="Software Engineer"></option>
+        <option value="Backend Engineer"></option>
+        <option value="Frontend Engineer"></option>
+        <option value="Full Stack Engineer"></option>
+        <option value="Data Scientist"></option>
+        <option value="Machine Learning Engineer"></option>
+        <option value="MLOps Engineer"></option>
+        <option value="Data Engineer"></option>
+        <option value="DevOps Engineer"></option>
+        <option value="Site Reliability Engineer (SRE)"></option>
+        <option value="Cloud Engineer"></option>
+        <option value="Cloud Architect"></option>
+        <option value="Security Engineer"></option>
+        <option value="QA Engineer"></option>
+        <option value="Automation Engineer"></option>
+        <option value="Mobile App Developer"></option>
+        <option value="Android Developer"></option>
+        <option value="iOS Developer"></option>
+        <option value="Web Developer"></option>
+        <option value="Embedded Engineer"></option>
+        <option value="Blockchain Developer"></option>
+        <option value="AR/VR Developer"></option>
+        <option value="Data Analyst"></option>
+        <option value="Business Intelligence Engineer"></option>
+        <option value="ETL Developer"></option>
+        <option value="API Developer"></option>
+        <option value="Platform Engineer"></option>
+        <option value="Systems Engineer"></option>
+        <option value="Game Developer"></option>
+        <option value="Salesforce Developer"></option>
+        <option value="SAP Consultant (Tech)"></option>
+        <option value="Product Manager (Tech)"></option>
+        <option value="Technical Program Manager"></option>
+        <option value="Tech Lead"></option>
+        <option value="Engineering Manager"></option>
+
+        <!-- ==== Non-Technical Roles ==== -->
+        <option value="Human Resources (HR)"></option>
+        <option value="Recruiter"></option>
+        <option value="Talent Acquisition Specialist"></option>
+        <option value="HR Manager"></option>
+        <option value="Marketing"></option>
+        <option value="Digital Marketing Specialist"></option>
+        <option value="Content Marketer"></option>
+        <option value="SEO Specialist"></option>
+        <option value="Social Media Manager"></option>
+        <option value="Product Marketing Manager"></option>
+        <option value="Sales"></option>
+        <option value="Business Development"></option>
+        <option value="Account Executive"></option>
+        <option value="Customer Success Manager"></option>
+        <option value="Customer Service"></option>
+        <option value="Finance"></option>
+        <option value="Financial Analyst"></option>
+        <option value="Accountant"></option>
+        <option value="Operations Manager"></option>
+        <option value="Project Manager"></option>
+        <option value="Program Manager"></option>
+        <option value="Technical Writer"></option>
+        <option value="UX Designer"></option>
+        <option value="UI Designer"></option>
+        <option value="Graphic Designer"></option>
+        <option value="Data Entry"></option>
+        <option value="Office Administrator"></option>
+        <option value="Consultant"></option>
+        <option value="Business Analyst"></option>
+        <option value="Supply Chain Analyst"></option>
+        <option value="Procurement Specialist"></option>
+        <option value="Quality Assurance (Non-Tech)"></option>
+        <option value="Product Manager (Non-Tech)"></option>
+      </datalist>
+    </div>
+
+    <label for="resume">Upload Resume:</label>
+    <input type="file" name="resume" id="resume" accept=".pdf,.docx,.doc" required>
+
+    <!-- Hidden fields used by backend views -->
+    <input type="hidden" id="domain" name="domain" value="technical">
+    <input type="hidden" id="tech_role" name="tech_role" value="">
+    <input type="hidden" id="nontech_role" name="nontech_role" value="">
+
+    <button type="submit" id="submitBtn">Analyze Resume</button>
+  </form>
+</div>
+
+<!-- ===== Fullscreen Loader ===== -->
+<div id="loaderOverlay" aria-hidden="true">
+  <div class="loader-box" role="status" aria-live="polite">
+    <!-- 1) PAPER-PLANE LOTTIE -->
+    <div id="lottiePlane" aria-label="paper-plane"></div>
+
+    <!-- 2) PROGRESS BAR LOTTIE -->
+    <div id="lottieBar" aria-label="progress-bar"></div>
+
+    <!-- 3) SENTENCES -->
+    <div id="loadingText">Initializing…</div>
+    <div id="etaNote"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* Lottie asset paths (put JSON files in /static/lottie/) */
+  const LOTTIE_PLANE_PATH = "{% static 'lottie/Loading-40-Paperplane.json' %}";
+  const LOTTIE_BAR_PATH   = "{% static 'lottie/progress-bar-fast.json' %}";
+
+  let planeAnim = null, barAnim = null;
+
+  function startPlane(){
+    if (!window.lottie || planeAnim) return;
+    planeAnim = lottie.loadAnimation({
+      container: document.getElementById('lottiePlane'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: LOTTIE_PLANE_PATH
+    });
+  }
+
+  function initBar(callback){
+    if (!window.lottie) return;
+    barAnim = lottie.loadAnimation({
+      container: document.getElementById('lottieBar'),
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: LOTTIE_BAR_PATH
+    });
+
+    let fired = false;
+    function fireOnce(){
+      if (fired) return;
+      fired = true;
+      if (typeof callback === 'function') callback();
+    }
+
+    barAnim.addEventListener('config_ready', fireOnce);
+    barAnim.addEventListener('DOMLoaded', fireOnce);
+    barAnim.addEventListener('data_ready', fireOnce);
+
+    // Fallbacks
+    barAnim.addEventListener('data_failed', () => {
+      console.warn('Lottie bar failed to load:', LOTTIE_BAR_PATH);
+      fireOnce();
+    });
+    setTimeout(fireOnce, 1500);
+  }
+
+  function animateBarForDuration(totalMs){
+    if (!barAnim) return;
+    const start = performance.now();
+    let totalFrames = 0;
+    try { totalFrames = Math.floor(barAnim.getDuration(true)) || 0; } catch(e) {}
+    if (!totalFrames) totalFrames = barAnim.totalFrames || 120;
+
+    function tick(now){
+      const elapsed = now - start;
+      const p = Math.min(1, elapsed / totalMs);
+      const frame = Math.floor(p * (totalFrames - 1));
+      try { barAnim.goToAndStop(frame, true); } catch(e) {}
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* Loader sentences (rotate every 3s) */
+  const messages = [
+    "Reading resume and metadata…",
+    "Extracting skills and experience timeline…",
+    "Scoring role relevance…",
+    "Matching market benchmarks…",
+    "Finalizing your profile…"
+  ];
+  let msgIdx = 0;
+  const loadingTextEl = document.getElementById('loadingText');
+  function cycleMessages(){
+    loadingTextEl.textContent = messages[msgIdx];
+    msgIdx = (msgIdx + 1) % messages.length;
+  }
+
+  // Form & loader wiring
+  const form       = document.getElementById('resumeForm');
+  const jobRoleInp = document.getElementById('job_role');
+  const domainInp  = document.getElementById('domain');
+  const techRoleInp   = document.getElementById('tech_role');
+  const nontechRoleInp= document.getElementById('nontech_role');
+  const overlay   = document.getElementById('loaderOverlay');
+  const submitBtn = document.getElementById('submitBtn');
+  const etaNote   = document.getElementById('etaNote');
+
+  form.addEventListener('submit', (e) => {
+    const role = jobRoleInp.value.trim();
+    const hasFile = document.getElementById('resume').files.length > 0;
+    if (!role || !hasFile) return;
+
+    // Handle form submission
+    e.preventDefault();
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+    submitBtn.disabled = true;
+
+    const BUFFER_MIN_MS = 15000, BUFFER_MAX_MS = 30000;
+    const bufferMs = Math.floor(Math.random() * (BUFFER_MAX_MS - BUFFER_MIN_MS + 1)) + BUFFER_MIN_MS;
+
+    startPlane();
+    initBar(() => animateBarForDuration(bufferMs));
+
+    cycleMessages();
+    const cycleId = setInterval(cycleMessages, 3000);
+    etaNote.textContent = `This may take about ${Math.floor(bufferMs/1000)} seconds…`;
+
+    setTimeout(() => {
+      clearInterval(cycleId);
+      form.submit();
+    }, bufferMs);
+  });
+})();
+</script>
+
+</body>
+</html>

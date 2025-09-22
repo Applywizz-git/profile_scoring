@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>ApplyWizz Login/Signup</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800" rel="stylesheet" />
+
+  <style>
+    /* Global */
+    * { 
+      box-sizing: border-box; 
+    }
+
+    body {
+      background: #f6f5f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: "Montserrat", sans-serif;
+      height: 100vh;
+      margin: -20px 0 50px;
+      padding: 0 15px;
+    }
+
+    /* Container */
+    .container {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+      position: relative;
+      overflow: hidden;
+      width: 678px;
+      max-width: 100%;
+      min-height: 400px;
+      display: flex;
+      flex-direction: row; /* desktop row layout */
+    }
+
+    /* Forms */
+    .form-container {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+
+    .sign-in-container {
+      opacity: 1;
+    }
+
+    .sign-up-container {
+      opacity: 0;
+    }
+
+    .container.right-panel-active .sign-in-container {
+      opacity: 0;
+    }
+
+    .container.right-panel-active .sign-up-container {
+      opacity: 1;
+    }
+
+    form {
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 50px;
+      height: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-weight: bold;
+      margin: 0;
+    }
+
+    input {
+      background-color: #eee;
+      border: none;
+      padding: 12px 15px;
+      margin: 8px 0;
+      width: 100%;
+    }
+
+    button {
+      border-radius: 20px;
+      border: 1px solid #ff4b2b;
+      background-color: #ff4b2b;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: transform 80ms ease-in;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    button.ghost {
+      background-color: transparent;
+      border-color: #ffffff;
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    a {
+      color: #333;
+      font-size: 14px;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    /* Overlay */
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
+    }
+
+    .container.right-panel-active .overlay-container {
+      transform: translateX(-100%);
+    }
+
+    .overlay {
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 0 0;
+      color: #ffffff;
+      position: relative;
+      left: -100%;
+      height: 100%;
+      width: 200%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .container.right-panel-active .overlay {
+      transform: translateX(50%);
+    }
+
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      text-align: center;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+      transform: translateX(-20%);
+    }
+
+    .container.right-panel-active .overlay-left {
+      transform: translateX(0);
+    }
+
+    .overlay-right {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    .container.right-panel-active .overlay-right {
+      transform: translateX(20%);
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 100;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      margin: 20px 0 30px;
+    }
+
+    /* Mobile + dropdown */
+    .mobile-number-container {
+      display: flex;
+      width: 100%;
+      margin: 8px 0;
+    }
+
+    .dropdown-container {
+      position: relative;
+      width: 30%;
+      margin-right: 10px;
+    }
+
+    .dropdown-button {
+      background-color: #eee;
+      border: none;
+      padding: 12px 15px;
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: "Montserrat", sans-serif;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      height: 100%;
+    }
+
+    .dropdown-arrow {
+      border: solid #666;
+      border-width: 0 1px 1px 0;
+      display: inline-block;
+      padding: 2px;
+      transform: rotate(45deg);
+      transition: transform 0.3s;
+    }
+
+    .dropdown-arrow.open {
+      transform: rotate(-135deg);
+    }
+
+    .dropdown-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 1000;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .dropdown-list.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+      font-weight: 500;
+      color: #000;
+    }
+
+    #selected-country-code {
+      color: #000000;
+      font-weight: normal;
+      font-style: normal;
+      padding-right: 1px;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-item.selected {
+      background-color: #ff4b2b;
+      color: #000000;
+    }
+
+    .mobile-number-input {
+      width: 70%;
+      margin: 0;
+    }
+
+    /* Messages */
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      text-align: center;
+      width: 100%;
+      display: none;
+    }
+
+    .message.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    /* Mobile Toggle */
+    .mobile-toggle {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .mobile-toggle a {
+      color: #ff4b2b;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        min-height: 500px;
+      }
+
+      .form-container {
+        width: 100%;
+        transform: translateX(0);
+        opacity: 1;
+        z-index: 1;
+      }
+
+      .sign-in-container {
+        transform: translateX(0);
+        opacity: 1;
+        z-index: 2;
+      }
+
+      .sign-up-container {
+        transform: translateX(0);
+        opacity: 0;
+        z-index: 1;
+      }
+
+      .container.right-panel-active .sign-in-container {
+        transform: translateX(0);
+        opacity: 0;
+        z-index: 1;
+      }
+
+      .container.right-panel-active .sign-up-container {
+        transform: translateX(0);
+        opacity: 1;
+        z-index: 2;
+      }
+
+      .overlay-container {
+        display: none;
+      }
+
+      form {
+        padding: 0 30px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      input {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      button {
+        padding: 10px 35px;
+        font-size: 11px;
+      }
+
+      a {
+        font-size: 12px;
+      }
+
+      p {
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      .dropdown-container {
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .mobile-number-container {
+        flex-direction: column;
+      }
+
+      .mobile-number-input {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+    }
+
+    /* Desktop alignment fix */
+    @media (min-width: 769px) {
+      .form-container {
+        position: relative;  /* prevent overlapping */
+        width: 50%;
+        opacity: 1;
+        transition: none;
+      }
+
+      .sign-in-container,
+      .sign-up-container {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+        <!-- Sign In -->
+    <div class="form-container sign-in-container">
+      <form id="signin-form" autocomplete="off">
+        <h1>Sign in</h1>
+
+        <input type="email" id="signin-email" placeholder="Email" required />
+        <input type="text" id="signin-otp" placeholder="OTP" />
+
+        <div id="signin-message" class="message"></div>
+
+        <button type="submit" id="signin-button">Send OTP</button>
+
+        <div class="mobile-toggle">
+          Don't have an account? <a id="mobile-signup">Sign Up</a>
+        </div>
+      </form>
+    </div>
+    <!-- Sign Up -->
+    <div class="form-container sign-up-container">
+      <form id="signup-form" autocomplete="off">
+        <h1>Create Account</h1>
+
+        <input type="email" id="signup-email" placeholder="Email" required />
+
+        <div class="mobile-number-container">
+          <div class="dropdown-container">
+            <button type="button" class="dropdown-button" id="country-code-button">
+              <span id="selected-country-code">+1</span>
+              <span class="dropdown-arrow"></span>
+            </button>
+            <div class="dropdown-list" id="country-code-list">
+              <div style="padding:8px; border-bottom:1px solid #000000;">
+                <input id="country-search" type="text" placeholder="Search country..." style="width:100%; padding:8px; border:1px solid #020202; border-radius:4px; font-size:14px;" />
+              </div>
+              <div id="country-code-items"></div>
+            </div>
+          </div>
+          <input type="tel" id="signup-mobile" class="mobile-number-input" placeholder="Mobile Number" required />
+        </div>
+
+        <input type="text" id="signup-otp" placeholder="OTP" />
+
+        <div id="signup-message" class="message"></div>
+
+        <button type="submit" id="signup-button">Send OTP</button>
+
+        <div class="mobile-toggle">
+          Already have an account? <a id="mobile-signin">Sign In</a>
+        </div>
+      </form>
+    </div>
+
+
+
+    <!-- Overlay -->
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="ghost" id="signin">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button class="ghost" id="signup">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    /* ===== Country codes (shortened list, extend as needed) ===== */
+    const COUNTRY_CODES = [
+      { code: '+1', name: 'United States/Canada' },
+      { code: '+44', name: 'United Kingdom' },
+      { code: '+91', name: 'India' },
+      { code: '+61', name: 'Australia' },
+      { code: '+65', name: 'Singapore' },
+      { code: '+971', name: 'United Arab Emirates' },
+      { code: '+234', name: 'Nigeria' },
+      { code: '+94', name: 'Sri Lanka' },
+      { code: '+880', name: 'Bangladesh' },
+      { code: '+92', name: 'Pakistan' },
+      { code: '+60', name: 'Malaysia' },
+      { code: '+62', name: 'Indonesia' },
+      { code: '+63', name: 'Philippines' },
+      { code: '+84', name: 'Vietnam' },
+      { code: '+81', name: 'Japan' },
+      { code: '+49', name: 'Germany' },
+      { code: '+33', name: 'France' },
+      { code: '+39', name: 'Italy' },
+      { code: '+7', name: 'Russia/Kazakhstan' }
+    ];
+
+    /* ===== CSRF (optional; views are csrf_exempt, so this can be omitted) ===== */
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    /* ===== Elements ===== */
+    const container = document.getElementById('container');
+
+    // overlay toggles
+    const signUpOverlayBtn = document.getElementById('signup');
+    const signInOverlayBtn = document.getElementById('signin');
+    const mobileSignUpBtn = document.getElementById('mobile-signup');
+    const mobileSignInBtn = document.getElementById('mobile-signin');
+
+    // signup
+    const signupForm = document.getElementById('signup-form');
+    const signupEmail = document.getElementById('signup-email');
+    const signupMobile = document.getElementById('signup-mobile');
+    const signupOtp = document.getElementById('signup-otp');
+    const signupButton = document.getElementById('signup-button');
+    const signupMessage = document.getElementById('signup-message');
+
+    // signin
+    const signinForm = document.getElementById('signin-form');
+    const signinEmail = document.getElementById('signin-email');
+    const signinOtp = document.getElementById('signin-otp');
+    const signinButton = document.getElementById('signin-button');
+    const signinMessage = document.getElementById('signin-message');
+
+    // country dropdown
+    const ccBtn = document.getElementById('country-code-button');
+    const ccList = document.getElementById('country-code-list');
+    theCcItems = document.getElementById('country-code-items');
+    const ccItems = theCcItems; // alias to keep code unchanged
+    const ccSelected = document.getElementById('selected-country-code');
+    const ccSearch = document.getElementById('country-search');
+
+    /* ===== State ===== */
+    let signupOtpSent = false;
+    let signinOtpSent = false;
+    let currentCC = '+1';
+    let signupCooldown = 0;
+    let signinCooldown = 0;
+    let cooldownTimer = null;
+
+    /* ===== Helpers ===== */
+    function normalizeLocalMobile(s) {
+      return (s || '').replace(/[^\d]/g, '');
+    }
+    function formatFullMobile(cc, local) {
+      let n = normalizeLocalMobile(local);
+      if (n.startsWith('0')) n = n.replace(/^0+/, '');
+      return `${cc}${n}`;
+    }
+    function setMessage(el, type, text) {
+      el.textContent = text || '';
+      el.className = 'message' + (type ? ' ' + type : '');
+      el.style.display = text ? 'block' : 'none';
+    }
+    function setDisabled(el, disabled) {
+      if (!el) return;
+      el.disabled = !!disabled;
+    }
+    function startCooldown(kind) {
+      if (kind === 'signup') signupCooldown = 60;
+      if (kind === 'signin') signinCooldown = 60;
+      if (cooldownTimer) clearInterval(cooldownTimer);
+      cooldownTimer = setInterval(() => {
+        if (signupCooldown > 0) signupCooldown--;
+        if (signinCooldown > 0) signinCooldown--;
+        updateButtons();
+        if (signupCooldown === 0 && signinCooldown === 0) {
+          clearInterval(cooldownTimer);
+          cooldownTimer = null;
+        }
+      }, 1000);
+    }
+    function updateButtons() {
+      if (!signupOtpSent) {
+        signupButton.textContent = signupCooldown > 0 ? `Resend in ${signupCooldown}s` : 'Send OTP';
+        setDisabled(signupButton, signupCooldown > 0);
+      } else {
+        signupButton.textContent = 'Sign Up';
+        setDisabled(signupButton, false);
+      }
+      if (!signinOtpSent) {
+        signinButton.textContent = signinCooldown > 0 ? `Resend in ${signinCooldown}s` : 'Send OTP';
+        setDisabled(signinButton, signinCooldown > 0);
+      } else {
+        signinButton.textContent = 'Sign In';
+        setDisabled(signinButton, false);
+      }
+    }
+
+    /* ===== Country code dropdown ===== */
+    function initCountryDropdown() {
+      ccItems.innerHTML = '';
+      COUNTRY_CODES.forEach(c => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.textContent = c.code;
+        item.title = c.name;
+        item.addEventListener('click', () => {
+          currentCC = c.code;
+          ccSelected.textContent = c.code;
+          ccList.classList.remove('show');
+        });
+        ccItems.appendChild(item);
+      });
+
+      ccBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        ccList.classList.toggle('show');
+        ccBtn.querySelector('.dropdown-arrow').classList.toggle('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!ccBtn.contains(e.target) && !ccList.contains(e.target)) {
+          ccList.classList.remove('show');
+          ccBtn.querySelector('.dropdown-arrow').classList.remove('open');
+        }
+      });
+
+      ccSearch.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        Array.from(ccItems.children).forEach(item => {
+          const code = item.textContent;
+          const obj = COUNTRY_CODES.find(c => c.code === code);
+          const show = obj && (obj.name.toLowerCase().includes(term) || obj.code.includes(term));
+          item.style.display = show ? 'block' : 'none';
+        });
+      });
+    }
+
+    /* ===== Toggle panels ===== */
+    function toggleSignIn(isSignIn) {
+      if (isSignIn) container.classList.remove('right-panel-active');
+      else container.classList.add('right-panel-active');
+      resetSignupForm();
+      resetSigninForm();
+    }
+    function resetSignupForm() {
+      signupEmail.value = '';
+      signupMobile.value = '';
+      signupOtp.value = '';
+      signupOtpSent = false;
+      signupCooldown = 0;
+      setMessage(signupMessage, '', '');
+      setDisabled(signupEmail, false);
+      setDisabled(signupMobile, false);
+      setDisabled(ccBtn, false);
+      setDisabled(signupOtp, true);
+      signupButton.textContent = 'Send OTP';
+      setDisabled(signupButton, false);
+    }
+    function resetSigninForm() {
+      signinEmail.value = '';
+      signinOtp.value = '';
+      signinOtpSent = false;
+      signinCooldown = 0;
+      setMessage(signinMessage, '', '');
+      setDisabled(signinEmail, false);
+      setDisabled(signinOtp, true);
+      signinButton.textContent = 'Send OTP';
+      setDisabled(signinButton, false);
+    }
+
+    /* ===== API helpers ===== */
+    function apiPost(url, formData) {
+      return fetch(url, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken') || '' // safe if absent (views are csrf_exempt)
+        },
+        credentials: 'include'
+      }).then(r => r.json());
+    }
+
+    /* ===== Signup flow ===== */
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!signupOtpSent) sendSignupOtp();
+      else verifySignupOtp();
+    });
+
+    function sendSignupOtp() {
+      const email = (signupEmail.value || '').trim().toLowerCase();
+      const mobile = formatFullMobile(currentCC, signupMobile.value);
+      if (!email || !mobile) {
+        setMessage(signupMessage, 'error', 'Please enter email and mobile.');
+        return;
+      }
+
+      setDisabled(signupButton, true);
+      signupButton.textContent = 'Loading...';
+      const fd = new FormData();
+      fd.append('email', email);
+      fd.append('mobile', mobile);
+
+      apiPost('/send-signup-otp', fd)  /* <-- fixed */
+        .then(data => {
+          if (data.status === 'success') {
+            signupOtpSent = true;
+            setMessage(signupMessage, 'success', data.message || 'OTP sent to your email.');
+            setDisabled(signupEmail, true);
+            setDisabled(signupMobile, true);
+            setDisabled(ccBtn, true);
+            setDisabled(signupOtp, false);
+            signupOtp.focus();
+            startCooldown('signup');
+          } else {
+            setMessage(signupMessage, 'error', data.message || 'Failed to send OTP.');
+          }
+        })
+        .catch(() => setMessage(signupMessage, 'error', 'Failed to send OTP. Please try again.'))
+        .finally(() => updateButtons());
+    }
+
+    function verifySignupOtp() {
+      const email = (signupEmail.value || '').trim().toLowerCase();
+      const mobile = formatFullMobile(currentCC, signupMobile.value);
+      const otp = (signupOtp.value || '').trim();
+      if (!email || !mobile || !otp) {
+        setMessage(signupMessage, 'error', 'Please fill all fields (email, mobile, OTP).');
+        return;
+      }
+
+      setDisabled(signupButton, true);
+      signupButton.textContent = 'Loading...';
+      const fd = new FormData();
+      fd.append('email', email);
+      fd.append('mobile', mobile);
+      fd.append('otp', otp);
+
+      apiPost('/verify-signup-otp', fd) /* <-- fixed */
+        .then(data => {
+          if (data.status === 'success' && data.redirect_url) {
+            window.location.href = data.redirect_url;
+          } else {
+            setMessage(signupMessage, 'error', data.message || 'Invalid or expired OTP.');
+            signupButton.textContent = 'Sign Up';
+            setDisabled(signupButton, false);
+          }
+        })
+        .catch(() => {
+          setMessage(signupMessage, 'error', 'Failed to verify OTP. Please try again.');
+          signupButton.textContent = 'Sign Up';
+          setDisabled(signupButton, false);
+        });
+    }
+
+    /* ===== Signin flow ===== */
+    signinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!signinOtpSent) sendSigninOtp();
+      else verifySigninOtp();
+    });
+
+    function sendSigninOtp() {
+      const email = (signinEmail.value || '').trim().toLowerCase();
+      if (!email) {
+        setMessage(signinMessage, 'error', 'Please enter email.');
+        return;
+      }
+      setDisabled(signinButton, true);
+      signinButton.textContent = 'Loading...';
+
+      const fd = new FormData();
+      fd.append('email', email);
+
+      apiPost('/send-email-otp', fd)  /* <-- fixed */
+        .then(data => {
+          if (data.status === 'success') {
+            signinOtpSent = true;
+            setMessage(signinMessage, 'success', data.message || 'OTP sent to your email.');
+            setDisabled(signinEmail, true);
+            setDisabled(signinOtp, false);
+            signinOtp.focus();
+            startCooldown('signin');
+          } else {
+            setMessage(signinMessage, 'error', data.message || 'Failed to send OTP.');
+          }
+        })
+        .catch(() => setMessage(signinMessage, 'error', 'Failed to send OTP. Please try again.'))
+        .finally(() => updateButtons());
+    }
+
+    function verifySigninOtp() {
+      const email = (signinEmail.value || '').trim().toLowerCase();
+      const otp = (signinOtp.value || '').trim();
+      if (!email || !otp) {
+        setMessage(signinMessage, 'error', 'Please enter email and OTP.');
+        return;
+      }
+
+      setDisabled(signinButton, true);
+      signinButton.textContent = 'Loading...';
+
+      const fd = new FormData();
+      fd.append('email', email);
+      fd.append('otp', otp);
+
+      apiPost('/verify-email-otp', fd)  /* <-- fixed */
+        .then(data => {
+          if (data.status === 'success' && data.redirect_url) {
+            window.location.href = data.redirect_url;
+          } else {
+            setMessage(signinMessage, 'error', data.message || 'Invalid or expired OTP.');
+            signinButton.textContent = 'Sign In';
+            setDisabled(signinButton, false);
+          }
+        })
+        .catch(() => {
+          setMessage(signinMessage, 'error', 'Failed to verify OTP. Please try again.');
+          signinButton.textContent = 'Sign In';
+          setDisabled(signinButton, false);
+        });
+    }
+
+    /* ===== Wire up toggles & init ===== */
+    function initToggles() {
+      if (signUpOverlayBtn) signUpOverlayBtn.addEventListener('click', () => toggleSignIn(false));
+      if (signInOverlayBtn) signInOverlayBtn.addEventListener('click', () => toggleSignIn(true));
+      if (mobileSignUpBtn) mobileSignUpBtn.addEventListener('click', () => toggleSignIn(false));
+      if (mobileSignInBtn) mobileSignInBtn.addEventListener('click', () => toggleSignIn(true));
+    }
+
+    function init() {
+      initCountryDropdown();
+      initToggles();
+      // Initial disabled for OTP fields
+      signupOtp.disabled = true;
+      signinOtp.disabled = true;
+      updateButtons();
+    }
+
+    init();
+  </script>
+</body>
+</html>
