@@ -16,7 +16,7 @@ environ.Env.read_env(BASE_DIR / ".env")
 # =====================
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)  # Use the DEBUG value from the .env file
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['profile-scoring-wxo6.onrender.com'])
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['http://localhost:8000'])
 
 # =====================
