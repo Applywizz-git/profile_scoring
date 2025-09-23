@@ -17,8 +17,8 @@ environ.Env.read_env(BASE_DIR / ".env")
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = True
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', 'profile-scoring-wxo6.onrender.com'])
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=['https://profile-scoring-wxo6.onrender.com'])
+ALLOWED_HOSTS = ['profile-scoring-wxo6.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://profile-scoring-wxo6.onrender.com']
 
 
 # =====================
@@ -143,3 +143,4 @@ DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True
 SECURE_SSL_REDIRECT = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
