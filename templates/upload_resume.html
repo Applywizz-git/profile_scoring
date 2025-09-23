@@ -344,6 +344,15 @@
     const hasFile = document.getElementById('resume').files.length > 0;
     if (!role || !hasFile) return;
 
+    // Set hidden fields for the role type
+    if (role === "technical") {
+      techRoleInp.value = role;
+      nontechRoleInp.value = "";
+    } else if (role === "non-technical") {
+      nontechRoleInp.value = role;
+      techRoleInp.value = "";
+    }
+
     // Handle form submission
     e.preventDefault();
     overlay.classList.add('show');
@@ -368,5 +377,7 @@
 })();
 </script>
 
+
 </body>
 </html>
+
