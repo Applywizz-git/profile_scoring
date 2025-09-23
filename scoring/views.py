@@ -719,10 +719,15 @@ def download_resume_pdf(request):
 # ========= Technical analyzer =========
 @require_POST
 def analyze_resume(request):
-    if request.POST.get("domain") != "technical":
-        return HttpResponseBadRequest("Please choose Technical category.")
-    if "resume" not in request.FILES:
-        return HttpResponseBadRequest("Resume file required.")
+    role = request.POST.get('tech_role')  # Check for the technical role
+    if role:
+        # If the selected role is 'technical', call the technical analyzer
+        return analyze_resume(request)
+
+    role = request.POST.get('nontech_role')  # Check for the non-technical role
+    if role:
+        # If the selected role is 'non-technical', call the non-tech analyzer
+        return analyze_resume_v2(request)
 
     resume_file = request.FILES["resume"]
     ext = os.path.splitext(resume_file.name)[1].lower()
@@ -1247,3 +1252,4 @@ def ats_report_view(request):
         }
         return render(request, "ats_report.html", ctx)
     return HttpResponseBadRequest("Use the upload endpoint to submit a resume.")
+
