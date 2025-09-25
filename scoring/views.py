@@ -699,22 +699,53 @@ def verify_login_otp(request):
 
 # ========= PDF Download =========
 def download_resume_pdf(request):
-    # pull either key (tech/non-tech)
+    # Pull either key (tech/non-tech)
     context = request.session.get("resume_context_tech") or \
               request.session.get("resume_context_nontech") or \
               request.session.get("resume_context", {})
-    template_path = "resume_result.html"
-    # simple heuristic switcher
-    if context and context.get("github_detection") == "NO" and context.get("role") in ["Human Resources","Marketing","Sales","Finance","Customer Service"]:
+    
+    # Get the user's role from context
+    user_role = context.get("role", "")
+    
+    # Check if the user's role is non-technical
+    if user_role in [
+        "Human Resources (HR) (Non-Tech)", "Recruiter (Non-Tech)", "Talent Acquisition Specialist (Non-Tech)", 
+        "HR Manager (Non-Tech)", "Marketing (Non-Tech)", "Digital Marketing Specialist (Non-Tech)", 
+        "Content Marketer (Non-Tech)", "SEO Specialist (Non-Tech)", "Social Media Manager (Non-Tech)", 
+        "Product Marketing Manager (Non-Tech)", "Sales (Non-Tech)", "Business Development (Non-Tech)", 
+        "Account Executive (Non-Tech)", "Customer Success Manager (Non-Tech)", "Customer Service (Non-Tech)", 
+        "Finance (Non-Tech)", "Financial Analyst (Non-Tech)", "Accountant (Non-Tech)", 
+        "Operations Manager (Non-Tech)", "Project Manager (Non-Tech)", "Program Manager (Non-Tech)", 
+        "Technical Writer (Non-Tech)", "UX Designer (Non-Tech)", "UI Designer (Non-Tech)", 
+        "Graphic Designer (Non-Tech)", "Data Entry (Non-Tech)", "Office Administrator (Non-Tech)", 
+        "Consultant (Non-Tech)", "Business Analyst (Non-Tech)", "Supply Chain Analyst (Non-Tech)", 
+        "Procurement Specialist (Non-Tech)", "Quality Assurance (Non-Tech)", "Product Manager (Non-Tech)"
+    ]:
+        # Set template to score_of_non_tech.html for non-technical roles
         template_path = "score_of_non_tech.html"
+    else:
+        # Default to resume_result.html for technical roles
+        template_path = "resume_result.html"
+    
+    # Get the template and render HTML
     template = get_template(template_path)
     html = template.render(context)
+    
+    # Get the applicant's name from context (assuming it's available)
+    applicant_name = context.get("applicant_name", "unknown_applicant")
+    
+    # Create the response and set the content type
     response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = 'attachment; filename="resume_report.pdf"'
+    response["Content-Disposition"] = f'attachment; filename="{applicant_name}_Profilevalidation_Report.pdf"'
+    
+    # Create PDF from HTML content
     pisa_status = pisa.CreatePDF(html, dest=response)
+    
     if pisa_status.err:
         return HttpResponse("We had some errors <pre>" + html + "</pre>")
+    
     return response
+
 
 # ========= Technical analyzer =========
 @require_POST
@@ -1252,4 +1283,5 @@ def ats_report_view(request):
         }
         return render(request, "ats_report.html", ctx)
     return HttpResponseBadRequest("Use the upload endpoint to submit a resume.")
+
 
